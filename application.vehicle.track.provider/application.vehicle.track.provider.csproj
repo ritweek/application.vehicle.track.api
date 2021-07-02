@@ -4,4 +4,9 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\application.vehicle.track.domain\application.vehicle.track.domain.csproj" />
+    <ProjectReference Include="..\application.vehicle.track.model\application.vehicle.track.model.csproj" />
+  </ItemGroup>
+
 </Project>

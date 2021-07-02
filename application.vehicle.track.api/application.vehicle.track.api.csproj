@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="Google.Apis.Auth" Version="1.52.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.6">
       <PrivateAssets>all</PrivateAssets>
@@ -14,12 +15,14 @@
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.11.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.1.4" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.11.1" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\application.vehicle.track.domain\application.vehicle.track.domain.csproj" />
     <ProjectReference Include="..\application.vehicle.track.model\application.vehicle.track.model.csproj" />
+    <ProjectReference Include="..\application.vehicle.track.provider\application.vehicle.track.provider.csproj" />
   </ItemGroup>
 
 </Project>

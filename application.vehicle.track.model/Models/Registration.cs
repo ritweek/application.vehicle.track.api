@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace application.vehicle.track.model.Models
 {
     public class Registration
     {
         [Key]
-        public Guid MyProperty { get; set; }
+        public Guid Id { get; set; }
+        [Required]
+        [EmailAddress]
         public string EmailId { get; set; }
         public string DeviceId { get; set; }
+        [Required(ErrorMessage = "Please Vehicle Register Number"), MaxLength(20)]
         public string VehicleNumber { get; set; }
-        public int UniqueNumber { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        public DateTime? CreatedDate { get; set; }
+        public bool IsActive { get; set; }
     }
 }

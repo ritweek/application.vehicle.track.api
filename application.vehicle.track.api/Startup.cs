@@ -10,7 +10,10 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
-using application.vehicle.track.api.Data;
+using application.vehicle.track.domain.Data;
+using Microsoft.OpenApi.Models;
+using application.vehicle.track.provider.Services;
+using application.vehicle.track.domain.Repository;
 
 namespace application.vehicle.track.api
 {
@@ -27,7 +30,33 @@ namespace application.vehicle.track.api
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers(o=> o.Filters.Add(new AuthorizeFilter()));
+            services.AddControllers(o=> o.Filters.Add(new AuthorizeFilter())).AddNewtonsoftJson();            
+            var contact = new OpenApiContact()
+            {
+                Name = "Ritweek Ranjan",
+                Email = "ritweek@gmail.com",
+                Url = new Uri("http://www.example.com")
+            };
+
+            var license = new OpenApiLicense()
+            {
+                Name = "My License",
+                Url = new Uri("http://www.example.com")
+            };
+
+            var info = new OpenApiInfo()
+            {
+                Version = "v1",
+                Title = "Vehicle Tracking API",
+                Description = "Swagger Vehicle Tracking API Description",
+                TermsOfService = new Uri("http://www.example.com"),
+                Contact = contact,
+                License = license
+            };
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", info);
+            });
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowAngularDevClient",
@@ -49,9 +78,16 @@ namespace application.vehicle.track.api
             // This is the tricky part to inject the configuration so the public key is ued to validate the JWT
             services.AddTransient<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
 
-            services.AddDbContext<applicationvehicletrackapiContext>(options =>
+            services.AddDbContext<VehicleContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("applicationvehicletrackapiContext")));
+            RegisterAppService(services);
 
+        }
+
+        private static void RegisterAppService(IServiceCollection services)
+        {
+            services.AddTransient<IVehicleTrackingService, VehicleTrackingService>();
+            services.AddTransient<IVehicleRepository, VehicleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +97,11 @@ namespace application.vehicle.track.api
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Vehicle Tracking API");
+            });
             app.UseCors("AllowAngularDevClient");
             app.UseRouting();
             app.UseAuthentication();
